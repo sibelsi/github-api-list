@@ -15,6 +15,10 @@ export const fetchRepos = (): AppThunk => async (dispatch) => {
   }
 };
 export const createRepo = (data: ICreateRepoData): AppThunk => async (dispatch) => {
+  if (!data.name.match(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i)) {
+    dispatch(repositoriesActions.setError('Invalid repository name'));
+    return;
+  }
   try {
     dispatch(repositoriesActions.setLoading(true));
     const newRepo = await githubApi.createRepo(data);

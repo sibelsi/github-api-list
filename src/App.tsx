@@ -6,9 +6,12 @@ import {CredentialsPage, ReposPage} from "@/pages";
 
 
 function App() {
+  const location = window.location;
+  const isLocalhost = location.host.includes("localhost")
+  const baseUrl = isLocalhost?'/': '/github-api-list';
 
   return (
-    <BrowserRouter >
+    <BrowserRouter basename={baseUrl} >
       <Provider store={store} >
         <Routes>
           <Route path="/" element={<CredentialsPage />} />

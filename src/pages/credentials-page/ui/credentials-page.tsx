@@ -24,7 +24,8 @@ export const CredentialsPage = () => {
         dispatch(authActions.setCredentials({ owner, token }));
         navigate('/repos')
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
         dispatch(authActions.setError('Invalid credentials. Please check your token.'))
       })
       .finally(()=>{setIsSubmitting(false)})

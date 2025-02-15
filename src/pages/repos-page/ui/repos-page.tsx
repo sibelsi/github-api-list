@@ -9,7 +9,15 @@ import {
   deleteRepo
 } from '@features/repositories/model/thunks';
 import styles from './repos-page.module.scss';
-import {CreateRepoModal, EditRepoModal, ICreateRepoData, IRepository, IUpdateRepoData, RepoCard} from "@/entities";
+import {
+  CreateRepoModal,
+  EditRepoModal,
+  ICreateRepoData,
+  ICredentials,
+  IRepository,
+  IUpdateRepoData,
+  RepoCard
+} from "@/entities";
 import {authActions} from "@features/auth/model/slice.ts";
 import {Button} from "@shared/ui/button/button.tsx";
 import {Loader} from "@shared/ui";
@@ -18,17 +26,22 @@ export const ReposPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { repos, loading, error } = useSelector((state: RootState) => state.repositories);
-  const credentials = useSelector((state: RootState) => state.auth.credentials);
   const [selectedRepo, setSelectedRepo] = useState<IRepository | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [credentials, setCredentials] = useState<ICredentials | null>(null);
 
   useEffect(() => {
-    if (!credentials) {
+    const creds = localStorage.getItem("credentials")
+    if (!creds) {
       navigate('/');
       return;
     }
+    setCredentials(JSON.parse(creds));
+  }, [dispatch, navigate]);
+
+  useEffect(() => {
     dispatch(fetchRepos());
-  }, [credentials, dispatch, navigate]);
+  }, [dispatch]);
 
   const handleLogout = () => {
     dispatch(authActions.logout());

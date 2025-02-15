@@ -1,14 +1,10 @@
-import axios from 'axios';
-// import { Repository, CreateRepoData } from '';
-import {axiosInstance} from "./axiosInstance.ts";
+import {privateAxiosInstance, publicAxiosInstance} from "./privateAxiosInstance.ts";
 import {ICreateRepoData, IRepository, IUpdateRepoData} from "@/entities";
-// import {CreateRepoData, Repository} from "src/entities";
 
 export const githubApi = {
   checkCredential: async ({token}:{ token: string }) => {
     try {
-      // Проверка валидности токена
-      const res =await axiosInstance(
+      const res =await publicAxiosInstance(
          '/user',
 
         {
@@ -21,26 +17,15 @@ export const githubApi = {
       throw new Error('Invalid credentials');
     }
   },
-  getRepos: async (credentials: { owner: string; token: string }) => {
-    const response = await axiosInstance(
-      `/users/${credentials.owner}/repos`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-          Accept: 'application/vnd.github.v3+json',
-        },
-      }
-    );
+  getRepos: async () => {
+    const response = await privateAxiosInstance(`/users/owner/repos`);
     return response.data as IRepository[];
   },
-  createRepo: async (token: string, data: ICreateRepoData): Promise<IRepository> => {
-    const response = await axiosInstance<ICreateRepoData>(
+
+  createRepo: async (data: ICreateRepoData): Promise<IRepository> => {
+    const response = await privateAxiosInstance<ICreateRepoData>(
       '/user/repos',{
-        method: 'post',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/vnd.github.v3+json',
-        },
+        method: 'POST',
         data: {
           name: data.name,
           description: data.description,
@@ -52,35 +37,24 @@ export const githubApi = {
   },
 
   updateRepo: async (
-    owner: string,
     repoName: string,
     data: IUpdateRepoData,
-    token: string
   ): Promise<IRepository> => {
-    const response = await axios.patch(
-      `https://api.github.com/repos/${owner}/${repoName}`,
-      {
-        description: data.description,
-        private: data.private,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/vnd.github.v3+json',
-        },
-      }
+    const response = await  privateAxiosInstance(
+      `https://api.github.com/repos/owner/${repoName}`, {
+        method: 'PATCH',
+        data: {
+          description: data.description,
+          private: data.private,
+        }}
     );
     return response.data;
   },
 
-  deleteRepo: async (owner: string, repoName: string, token: string): Promise<void> => {
-    await axios.delete(
-      `https://api.github.com/repos/${owner}/${repoName}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/vnd.github.v3+json',
-        },
+  deleteRepo: async (repoName: string): Promise<void> => {
+    await privateAxiosInstance(
+      `https://api.github.com/repos/owner/${repoName}`, {
+        method: 'DELETE',
       }
     );
   },

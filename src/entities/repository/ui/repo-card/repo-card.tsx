@@ -1,15 +1,17 @@
-import styles from './repo-card.module.scss';
+import {SyntheticEvent} from "react";
 import {IRepository} from "@/entities";
 import {Button} from "@shared/ui";
+import styles from './repo-card.module.scss';
 
 type RepoCardProps = {
   repo: IRepository;
-  onEdit: () => void;
-  onDelete: () => void;
+  onEdit: (e: SyntheticEvent) => void;
+  onDelete: (e: SyntheticEvent) => void;
+  onClick: () => void;
 };
 
-export const RepoCard = ({ repo, onEdit, onDelete }: RepoCardProps) => (
-  <div className={styles.card}>
+export const RepoCard = ({ repo, onEdit, onDelete, onClick}: RepoCardProps) => (
+  <div className={styles.card} onClick={onClick}>
     <div className={styles.body}>
       <div className={styles.meta}>
         <span className={styles.visibility}>

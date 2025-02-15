@@ -28,3 +28,12 @@ export interface IGitHubError extends Error {
     };
   };
 }
+
+export interface IRepoContentItem {
+  name: string;
+  path: string;
+  type: 'file' | 'dir';
+  size: number;
+  html_url: string;
+  download_url?: string;
+}

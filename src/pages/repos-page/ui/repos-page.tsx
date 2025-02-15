@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {SyntheticEvent, useCallback, useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { AppDispatch, RootState } from '@shared/lib/redux/store';
@@ -16,7 +16,7 @@ import {
   ICredentials,
   IRepository,
   IUpdateRepoData,
-  RepoCard
+  RepoCard, RepoContentModal
 } from "@/entities";
 import {authActions} from "@features/auth/model/slice.ts";
 import {Button} from "@shared/ui/button/button.tsx";
@@ -26,9 +26,10 @@ export const ReposPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { repos, loading, error } = useSelector((state: RootState) => state.repositories);
-  const [selectedRepo, setSelectedRepo] = useState<IRepository | null>(null);
+  const [editedRepo, setEditedRepo] = useState<IRepository | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [credentials, setCredentials] = useState<ICredentials | null>(null);
+  const [selectedRepo, setSelectedRepo] = useState<IRepository | null>(null);
 
   useEffect(() => {
     const creds = localStorage.getItem("credentials")
@@ -54,24 +55,46 @@ export const ReposPage = () => {
   };
 
   const handleUpdate = async (data: IUpdateRepoData) => {
-    if (selectedRepo) {
-      await dispatch(updateRepo(selectedRepo.id, data));
-      setSelectedRepo(null);
+    if (editedRepo) {
+      await dispatch(updateRepo(editedRepo.id, data));
+      setEditedRepo(null);
     }
   };
 
-  const handleDelete = (repoId: number) => {
+  const handleDelete = useCallback((repoId: number) => {
     if (confirm('Are you sure you want to delete this repository?')) {
       dispatch(deleteRepo(repoId));
     }
-  };
+  }, [dispatch]);
+
+  const editRepoHandler = useCallback((repo: IRepository) => (e:SyntheticEvent) => {
+    e.stopPropagation()
+    setEditedRepo(repo)
+  }, [setEditedRepo]);
+
+  const deleteRepoHandler = useCallback((repoId: number) => (e:SyntheticEvent) => {
+    e.stopPropagation()
+    handleDelete(repoId)
+  },[handleDelete])
+
+  const selectRepoHandler = useCallback((repo: IRepository) => () => {
+    setSelectedRepo(repo)
+  },[])
+
+  const handleOpenCreateRepoModal = useCallback(() => setShowCreateModal(true), [setShowCreateModal]);
+
+  const handleCloseCreateRepoModal = useCallback(() => setShowCreateModal(false), [setShowCreateModal]);
+
+  const handleCloseEditRepoModal = useCallback(() => setEditedRepo(null), [setEditedRepo]);
+
+  const handleCloseRepoContentModal = useCallback(() => setSelectedRepo(null), [setSelectedRepo]);
 
   return (
     <div className={styles.container}>
       <header className={styles.header}>
         <h1>{credentials?.owner}'s Repositories:  </h1>
         <div className={styles.controls}>
-          <Button variant="primary" onClick={() => setShowCreateModal(true)}>
+          <Button variant="primary" onClick={handleOpenCreateRepoModal}>
             New Repository
           </Button>
           <Button variant="secondary" onClick={handleLogout}>
@@ -88,8 +111,9 @@ export const ReposPage = () => {
           <RepoCard
             key={repo.id}
             repo={repo}
-            onEdit={() => setSelectedRepo(repo)}
-            onDelete={() => handleDelete(repo.id)}
+            onEdit={editRepoHandler(repo)}
+            onDelete={deleteRepoHandler(repo.id)}
+            onClick={selectRepoHandler(repo)}
           />
         ))}
       </div>
@@ -99,16 +123,23 @@ export const ReposPage = () => {
       {showCreateModal && (
         <CreateRepoModal
           onCreate={handleCreate}
-          onClose={() => setShowCreateModal(false)}
+          onClose={handleCloseCreateRepoModal}
         />
       )}
 
-      {selectedRepo && (
+      {editedRepo && (
         <EditRepoModal
-          repo={selectedRepo}
+          repo={editedRepo}
           onUpdate={handleUpdate}
-          onClose={() => setSelectedRepo(null)}
+          onClose={handleCloseEditRepoModal}
         />
+      )}
+
+      { selectedRepo && (
+      <RepoContentModal
+        repo={selectedRepo.name}
+        onClose={handleCloseRepoContentModal}
+      />
       )}
     </div>
   );

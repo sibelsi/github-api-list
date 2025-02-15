@@ -1,12 +1,14 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import {configureStore, ThunkAction, Action} from '@reduxjs/toolkit';
 import {authReducer} from "@features/auth/model/slice.ts";
 import {repositoriesReducer} from "@features/repositories/model/slice.ts";
+import {repoContentReducer} from "@features/repo-content/model/slice.ts";
 
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     repositories: repositoriesReducer,
+    repoContent: repoContentReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(),

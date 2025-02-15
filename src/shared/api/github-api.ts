@@ -1,5 +1,5 @@
 import {privateAxiosInstance, publicAxiosInstance} from "./privateAxiosInstance.ts";
-import {ICreateRepoData, IRepository, IUpdateRepoData} from "@/entities";
+import {ICreateRepoData, IRepoContentItem, IRepository, IUpdateRepoData} from "@/entities";
 
 export const githubApi = {
   checkCredential: async ({token}:{ token: string }) => {
@@ -56,5 +56,21 @@ export const githubApi = {
         method: 'DELETE',
       }
     );
+  },
+
+  getRepoContent: async (
+    repo: string,
+    path: string,
+  ): Promise<IRepoContentItem[]> => {
+    // const response = await axios.get(
+    const response = await privateAxiosInstance(
+      `https://api.github.com/repos/owner/${repo}/contents/${path}`,
+      {
+        // headers: {
+        //   Accept: 'application/vnd.github.v3+json',
+        // },
+      }
+    );
+    return response.data;
   },
 };

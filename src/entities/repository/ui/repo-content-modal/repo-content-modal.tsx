@@ -15,6 +15,7 @@ export const RepoContentModal = ({
   onClose: () => void;
 }) => {
   const dispatch = useDispatch<AppDispatch>();
+
   const {items, currentPath, loading, error} = useSelector(
     (state: RootState) => state.repoContent
   );

@@ -1,4 +1,4 @@
-import { repositoriesActions } from './slice';
+import {repositoriesActions} from './slice';
 import {ICreateRepoData, IGitHubError, IUpdateRepoData} from "@/entities";
 import {AppThunk} from "@shared/lib/redux/store.ts";
 import {githubApi} from "@shared/api";

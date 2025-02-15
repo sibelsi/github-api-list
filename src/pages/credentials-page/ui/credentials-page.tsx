@@ -1,5 +1,5 @@
 import {useCallback, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@shared/lib/redux/store.ts";
 import {githubApi} from "@shared/api";

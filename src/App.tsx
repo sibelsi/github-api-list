@@ -6,7 +6,6 @@ import {CredentialsPage, ReposPage} from "@/pages";
 
 
 function App() {
-
   return (
     <BrowserRouter >
     <Provider store={store} >

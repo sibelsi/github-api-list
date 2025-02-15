@@ -55,7 +55,7 @@ export const ReposPage = () => {
 
   const handleUpdate = async (data: IUpdateRepoData) => {
     if (selectedRepo) {
-      await dispatch(updateRepo(selectedRepo.id, data ));
+      await dispatch(updateRepo(selectedRepo.id, data));
       setSelectedRepo(null);
     }
   };
@@ -69,7 +69,7 @@ export const ReposPage = () => {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1>{credentials?.owner}'s Repositories</h1>
+        <h1>{credentials?.owner}'s Repositories:  </h1>
         <div className={styles.controls}>
           <Button variant="primary" onClick={() => setShowCreateModal(true)}>
             New Repository
@@ -80,7 +80,6 @@ export const ReposPage = () => {
         </div>
       </header>
 
-      {loading && <Loader className={styles.loader} />}
 
       {error && <div className={styles.error}>{error}</div>}
 
@@ -94,6 +93,8 @@ export const ReposPage = () => {
           />
         ))}
       </div>
+
+      {loading && <Loader className={styles.loader} />}
 
       {showCreateModal && (
         <CreateRepoModal

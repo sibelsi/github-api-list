@@ -32,10 +32,6 @@
     background-color: $secondary-color;
     cursor: not-allowed;
   }
-
-  &[type="password"] {
-    font-family: system-ui, sans-serif; // Скрытие точек пароля в некоторых браузерах
-  }
 }
 
 .error {

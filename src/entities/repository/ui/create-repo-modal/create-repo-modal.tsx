@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import {ICreateRepoData} from "@/entities";
 import styles from './create-repo-modal.module.scss';
 import {Input} from "@shared/ui";

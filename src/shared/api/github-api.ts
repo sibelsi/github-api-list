@@ -6,7 +6,6 @@ export const githubApi = {
     try {
       const res =await publicAxiosInstance(
          '/user',
-
         {
         headers: {
           Authorization: `Bearer ${token}`,

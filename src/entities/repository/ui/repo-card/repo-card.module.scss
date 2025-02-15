@@ -10,6 +10,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow-x: hidden;
 
   &:hover {
     transform: translateY(-2px);
@@ -27,7 +28,7 @@
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
   color: $text-primary;
-  //flex-grow: 1;
+  word-break: break-all;
 }
 
 .description {
@@ -35,7 +36,6 @@
   color: color.adjust($text-primary, $lightness: 20%, $space: hsl);
   margin-bottom: 1rem;
   word-break: break-all;
-  //flex-grow: 5;
 }
 
 .meta {
@@ -44,7 +44,6 @@
   gap: 0.5rem;
   font-size: 0.8rem;
   color: color.adjust($text-primary, $lightness: 30%, $space: hsl);
-  //flex-grow: 1;
 }
 
 .actions {

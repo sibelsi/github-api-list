@@ -6,14 +6,15 @@ import {CredentialsPage, ReposPage} from "@/pages";
 
 
 function App() {
+
   return (
     <BrowserRouter >
-    <Provider store={store} >
-      <Routes>
-        <Route path="/" element={<CredentialsPage />} />
-        <Route path="/repos" element={<ReposPage />} />
-      </Routes>
-    </Provider>
+      <Provider store={store} >
+        <Routes>
+          <Route path="/" element={<CredentialsPage />} />
+          <Route path="/repos" element={<ReposPage />} />
+        </Routes>
+      </Provider>
     </BrowserRouter>
   )
 }

@@ -62,13 +62,9 @@ export const githubApi = {
     repo: string,
     path: string,
   ): Promise<IRepoContentItem[]> => {
-    // const response = await axios.get(
     const response = await privateAxiosInstance(
       `https://api.github.com/repos/owner/${repo}/contents/${path}`,
       {
-        // headers: {
-        //   Accept: 'application/vnd.github.v3+json',
-        // },
       }
     );
     return response.data;

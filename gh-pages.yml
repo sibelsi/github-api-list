@@ -1,13 +1,10 @@
 name: Deploy to GitHub-Pages
 
-# on:
-#   push:
-#     branches:
-#       - main
-#       - master
-workflow:
-  rules:
-    - if: $CI_JOB_MANUAL
+on:
+  push:
+    branches:
+      - main
+      - master
 
 jobs:
   deploy:

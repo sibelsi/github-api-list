@@ -1,0 +1,53 @@
+@use '@shared/styles/variables' as *;
+
+.container {
+  margin-bottom: $spacing-unit * 2;
+  margin-right: 20px;
+}
+
+.label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: $spacing-unit;
+  color: $text-primary;
+  font-weight: 500;
+}
+
+.area {
+  width: 100%;
+  padding: $spacing-unit * 1.5;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+  }
+
+  &:disabled {
+    background-color: $secondary-color;
+    cursor: not-allowed;
+  }
+
+  &[type="password"] {
+    font-family: system-ui, sans-serif; // Скрытие точек пароля в некоторых браузерах
+  }
+}
+
+.error {
+  border-color: $error-color;
+
+  &:focus {
+    border-color: $error-color;
+    box-shadow: 0 0 0 3px rgba($error-color, 0.1);
+  }
+}
+
+.errorMessage {
+  color: $error-color;
+  font-size: 0.8rem;
+  margin-top: $spacing-unit;
+}

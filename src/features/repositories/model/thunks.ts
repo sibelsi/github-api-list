@@ -23,6 +23,7 @@ export const createRepo = (data: ICreateRepoData): AppThunk => async (dispatch) 
     dispatch(repositoriesActions.setLoading(true));
     const newRepo = await githubApi.createRepo(data);
     dispatch(repositoriesActions.addRepo(newRepo));
+    dispatch(repositoriesActions.setError(''));
   } catch (err) {
     const error = err as IGitHubError;
     const message = error.response?.data?.message || 'Failed to create repository';
@@ -49,6 +50,7 @@ export const updateRepo = (
       data,
     );
     dispatch(repositoriesActions.updateRepo(updatedRepo));
+    dispatch(repositoriesActions.setError(''));
   } catch (err) {
     const error = err as IGitHubError;
     const message = error.response?.data?.message || 'Failed to update repository';
@@ -72,7 +74,7 @@ export const deleteRepo = (repoId: number): AppThunk => async (dispatch, getStat
     await githubApi.deleteRepo(
       repo.name,
     );
-
+    dispatch(repositoriesActions.setError(''));
     dispatch(repositoriesActions.deleteRepo(repoId));
   } catch (err) {
     const error = err as IGitHubError;

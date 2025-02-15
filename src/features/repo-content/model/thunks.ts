@@ -10,7 +10,7 @@ export const fetchRepoContent = (
     dispatch(repoContentActions.setLoading(true));
     const content = await githubApi.getRepoContent(repo, path);
     dispatch(repoContentActions.setContent({ items: content, path }));
-  } catch (error) {
+  } catch {
     dispatch(repoContentActions.setError('Failed to load content'));
   } finally {
     dispatch(repoContentActions.setLoading(false));
